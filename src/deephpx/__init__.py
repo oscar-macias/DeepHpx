@@ -1,13 +1,25 @@
 """DeepHpx.
 
-Milestone 1: HEALPix map ingestion and ordering normalization.
+Milestone 1:
+- HEALPix map ingestion
+- Ordering normalization (RING <-> NEST)
 
-The project is intentionally dependency-light. FITS I/O + RING/NESTED conversions
-require the optional `healpy` dependency.
+Milestone 2:
+- PyGSP-free HEALPix graph connectivity (neighbours, adjacency, Laplacian)
+
+Milestone 3:
+- Pure-PyTorch Chebyshev (ChebNet-style) graph convolution
+
+The project is intentionally modular:
+- Base installation depends only on NumPy.
+- Extras:
+  - `deephpx[healpix]` installs `healpy` (FITS I/O + ordering conversions + neighbour queries)
+  - `deephpx[graph]` installs `scipy` (sparse adjacency/Laplacians)
+  - `deephpx[torch]` installs `torch` (torch sparse conversion + Milestone 3 NN layers)
 """
 
 from __future__ import annotations
 
 __all__ = ["__version__"]
 
-__version__ = "0.1.0"
+__version__ = "0.3.0"
