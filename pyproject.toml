@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deephpx"
+version = "0.1.0"
+description = "DeepHpx: modern PyTorch-friendly HEALPix ingestion + graph utilities for SBI"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "DeepHpx contributors"}]
+
+dependencies = [
+  "numpy>=1.23",
+]
+
+[project.optional-dependencies]
+# HEALPix utilities (FITS I/O + RING<->NEST conversions). We use healpy APIs such as
+# healpy.fitsfunc.read_map(..., nest=..., h=...) and healpy.pixelfunc.reorder(...).
+healpix = [
+  "healpy>=1.15",
+]
+
+dev = [
+  "pytest>=7.4",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
