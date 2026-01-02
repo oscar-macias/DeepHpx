@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "deephpx"
-version = "0.1.0"
+version = "0.4.0"
 description = "DeepHpx: modern PyTorch-friendly HEALPix ingestion + graph utilities for SBI"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -16,10 +16,23 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# HEALPix utilities (FITS I/O + RING<->NEST conversions). We use healpy APIs such as
-# healpy.fitsfunc.read_map(..., nest=..., h=...) and healpy.pixelfunc.reorder(...).
+# HEALPix utilities (FITS I/O + RING<->NEST conversions + neighbour queries).
+# We use healpy APIs such as:
+# - healpy.fitsfunc.read_map(..., nest=..., h=...)
+# - healpy.pixelfunc.reorder(...)
+# - healpy.pixelfunc.get_all_neighbours(...)
 healpix = [
   "healpy>=1.15",
+]
+
+# Sparse adjacency + Laplacians
+graph = [
+  "scipy>=1.9",
+]
+
+# Torch sparse conversion utilities (Milestone 3 adds torch NN layers)
+torch = [
+  "torch>=2.0",
 ]
 
 dev = [

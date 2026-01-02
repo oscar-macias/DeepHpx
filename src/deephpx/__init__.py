@@ -10,6 +10,9 @@ Milestone 2:
 Milestone 3:
 - Pure-PyTorch Chebyshev (ChebNet-style) graph convolution
 
+Milestone 4:
+- HEALPix pooling/unpooling layers (for hierarchical downsampling)
+
 The project is intentionally modular:
 - Base installation depends only on NumPy.
 - Extras:
@@ -22,4 +25,4 @@ from __future__ import annotations
 
 __all__ = ["__version__"]
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
