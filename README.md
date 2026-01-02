@@ -1,11 +1,12 @@
-# DeepHpx (Milestone 4)
+# DeepHpx (Milestone 5)
 
-This is the **Milestone 4** cut of the DeepHpx project.
+This is the **Milestone 5** cut of the DeepHpx project.
 
 - **Milestone 1:** HEALPix map ingestion + ordering normalization (RING <-> NEST)
 - **Milestone 2:** PyGSP-free HEALPix graph backend (neighbours -> adjacency -> Laplacian)
 - **Milestone 3:** Chebyshev (ChebNet-style) graph convolution in pure PyTorch
 - **Milestone 4:** HEALPix pooling/unpooling layers (NSIDE/2 <-> pixels/4)
+- **Milestone 5:** Multi-resolution HEALPix encoder (maps -> fixed-length embeddings)
 
 ## Install (editable)
 
@@ -40,7 +41,7 @@ pip install -e '.[dev,healpix,graph,torch]'
 pytest
 ```
 
-## Milestone 4 features
+## Milestone 5 features
 
 - **Neighbours:** build 8-neighbour connectivity via `healpy.pixelfunc.get_all_neighbours`
 - **Adjacency:** build a SciPy sparse CSR adjacency matrix from neighbour lists
@@ -48,6 +49,7 @@ pytest
 - **Torch:** convert SciPy sparse matrices to `torch.sparse` COO tensors
 - **ChebConv:** Chebyshev graph convolution (`deephpx.nn.ChebConv` / `deephpx.nn.SphericalChebConv`)
 - **Pooling:** HEALPix AvgPool/MaxPool (+ corresponding unpool layers) for hierarchical downsampling
+- **Encoder:** `deephpx.nn.HealpixEncoder` that stacks ChebConv + pooling and returns an embedding vector
 
 ## Examples
 
@@ -68,5 +70,11 @@ Smoke test the HEALPix pooling/unpooling layers:
 ```bash
 python examples/03_healpix_pooling_smoke.py --npix 12288 --mode average
 python examples/03_healpix_pooling_smoke.py --npix 12288 --mode max
+```
+
+Smoke test the multi-resolution encoder:
+
+```bash
+python examples/04_encoder_forward.py --nside 16 --levels 3 --channels 8,16,32 --embedding-dim 64
 ```
 

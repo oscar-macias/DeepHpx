@@ -7,6 +7,10 @@ graph convolution stack without PyGSP / PyTorch Geometric dependencies:
 
 Milestone 4 adds HEALPix sampling pooling / unpooling layers.
 
+Milestone 5 adds a minimal multi-resolution HEALPix encoder that turns maps
+into fixed-length embeddings suitable as the conditioner/context for
+normalizing flows in SBI/LtU-ILI pipelines.
+
 The intended workflow is:
 1) Build a (scaled) Laplacian with :mod:`deephpx.graph.laplacian`.
 2) Convert it to ``torch.sparse`` COO.
@@ -23,6 +27,7 @@ from .healpix_pooling import (
     HealpixMaxPool,
     HealpixMaxUnpool,
 )
+from .encoder import HealpixEncoder, HealpixEncoderSpec
 
 __all__ = [
     "cheb_conv",
@@ -33,4 +38,6 @@ __all__ = [
     "HealpixMaxPool",
     "HealpixMaxUnpool",
     "Healpix",
+    "HealpixEncoder",
+    "HealpixEncoderSpec",
 ]

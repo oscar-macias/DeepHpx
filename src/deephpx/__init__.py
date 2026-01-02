@@ -13,6 +13,9 @@ Milestone 3:
 Milestone 4:
 - HEALPix pooling/unpooling layers (for hierarchical downsampling)
 
+Milestone 5:
+- Multi-resolution HEALPix encoder (maps -> fixed-length embeddings)
+
 The project is intentionally modular:
 - Base installation depends only on NumPy.
 - Extras:
@@ -25,4 +28,4 @@ from __future__ import annotations
 
 __all__ = ["__version__"]
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
