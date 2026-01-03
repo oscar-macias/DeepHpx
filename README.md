@@ -1,40 +1,16 @@
-# DeepHpx (Milestone 7)
+# DeepHpx 
 
-This is the **Milestone 7** cut of the DeepHpx project.
+Heres is a **summary** of the core functionality of this project:
 
-- **Milestone 1:** HEALPix map ingestion + ordering normalization (RING <-> NEST)
-- **Milestone 2:** PyGSP-free HEALPix graph backend (neighbours -> adjacency -> Laplacian)
-- **Milestone 3:** Chebyshev (ChebNet-style) graph convolution in pure PyTorch
-- **Milestone 4:** HEALPix pooling/unpooling layers (NSIDE/2 <-> pixels/4)
-- **Milestone 5:** Multi-resolution HEALPix encoder (maps -> fixed-length embeddings)
-- **Milestone 6:** LtU-ILI integration (HEALPix maps -> LtU-ILI loaders + SBI flow training helpers)
-- **Milestone 7:** Streaming HEALPix ingestion (PyTorch DataLoader -> LtU-ILI TorchLoader) + lampe training helper
+- **1)** HEALPix map ingestion + ordering normalization (RING <-> NEST)
+- **2)** PyGSP-free HEALPix graph backend (neighbours -> adjacency -> Laplacian)
+- **3)** Chebyshev (ChebNet-style) graph convolution in pure PyTorch
+- **4)** HEALPix pooling/unpooling layers (NSIDE/2 <-> pixels/4)
+- **5)** Multi-resolution HEALPix encoder (maps -> fixed-length embeddings)
+- **6)** LtU-ILI integration (HEALPix maps -> LtU-ILI loaders + SBI flow training helpers)
+- **7)** Streaming HEALPix ingestion (PyTorch DataLoader -> LtU-ILI TorchLoader) + lampe training helper
 
 ## Install (editable)
-
-Base (NumPy only):
-
-```bash
-pip install -e .
-```
-
-Enable FITS I/O + ordering conversions + neighbour queries:
-
-```bash
-pip install -e '.[healpix]'
-```
-
-Enable sparse graph utilities (adjacency/Laplacian):
-
-```bash
-pip install -e '.[graph]'
-```
-
-(Optional) enable torch (needed for Milestone 3 NN layers):
-
-```bash
-pip install -e '.[torch]'
-```
 
 For development (pytest):
 
@@ -43,7 +19,7 @@ pip install -e '.[dev,healpix,graph,torch]'
 pytest
 ```
 
-## LtU-ILI integration (Milestone 6-7)
+## LtU-ILI integration 
 
 DeepHpx keeps LtU-ILI as an *optional* dependency.
 
@@ -59,7 +35,7 @@ This installs ``ltu-ili[pytorch]`` and enables:
 - ``deephpx.ili.make_ili_numpy_loader(...)`` and friends
 - ``deephpx.ili.train_sbi_posterior(...)``
 
-## Milestone 6 features
+## Version 0.5 features
 
 - **Neighbours:** build 8-neighbour connectivity via `healpy.pixelfunc.get_all_neighbours`
 - **Adjacency:** build a SciPy sparse CSR adjacency matrix from neighbour lists
@@ -69,15 +45,12 @@ This installs ``ltu-ili[pytorch]`` and enables:
 - **Pooling:** HEALPix AvgPool/MaxPool (+ corresponding unpool layers) for hierarchical downsampling
 - **Encoder:** `deephpx.nn.HealpixEncoder` that stacks ChebConv + pooling and returns an embedding vector
 
-Milestone 6 adds:
+We also added:
 
 - **LtU-ILI integration:** ``deephpx.ili`` helpers for wrapping HEALPix maps
   into LtU-ILI loaders (``ili.dataloaders.NumpyLoader``)
 - **Embedding net:** ``deephpx.ili.HealpixEmbeddingNet`` that internally builds
   the Laplacian pyramid and can be passed into ``ili.utils.load_nde_sbi``
-
-Milestone 7 adds:
-
 - **Streaming dataset:** ``deephpx.ili.HealpixFileDataset`` for on-demand disk reads
 - **TorchLoader wrappers:** ``deephpx.ili.make_ili_torch_loader_from_files(...)``
   to create LtU-ILI ``TorchLoader`` objects from map files + ``theta.npy``
