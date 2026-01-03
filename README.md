@@ -35,7 +35,7 @@ This installs ``ltu-ili[pytorch]`` and enables:
 - ``deephpx.ili.make_ili_numpy_loader(...)`` and friends
 - ``deephpx.ili.train_sbi_posterior(...)``
 
-## Version 0.5 features
+## Version 0.7.0 features
 
 - **Neighbours:** build 8-neighbour connectivity via `healpy.pixelfunc.get_all_neighbours`
 - **Adjacency:** build a SciPy sparse CSR adjacency matrix from neighbour lists
