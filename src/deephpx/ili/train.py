@@ -129,4 +129,88 @@ def train_sbi_posterior(
     return posterior, summaries, runner
 
 
-__all__ = ["train_sbi_posterior"]
+def train_lampe_posterior(
+    loader: Any,
+    *,
+    prior: Any,
+    embedding_net: Optional[Any] = None,
+    engine: str = "NPE",
+    model: str = "maf",
+    nde_kwargs: Optional[Dict[str, Any]] = None,
+    train_args: Optional[Dict[str, Any]] = None,
+    out_dir: Optional[str | Path] = None,
+    device: str = "cpu",
+    proposal: Optional[Any] = None,
+    name: str = "deephpx",
+    signatures: Optional[list[str]] = None,
+    seed: Optional[int] = None,
+):
+    """Train a *lampe* (streaming-friendly) NPE posterior via LtU-ILI.
+
+    This mirrors :func:`train_sbi_posterior` but uses LtU-ILI's lampe backend.
+
+    Notes
+    -----
+    LtU-ILI's lampe runner can consume a ``TorchLoader`` that wraps PyTorch
+    DataLoaders (train/val), enabling streaming training. In contrast, the sbi
+    runner typically loads all ``(x, theta)`` into memory.
+    """
+
+    try:
+        import ili  # noqa: F401
+        from ili.utils import load_nde_lampe  # type: ignore
+    except Exception as e:  # pragma: no cover
+        raise ImportError(
+            "LtU-ILI is required for train_lampe_posterior(). "
+            "Install with `pip install 'deephpx[ili]'` (or install ltu-ili[pytorch] directly)."
+        ) from e
+
+    nde_kwargs = {} if nde_kwargs is None else dict(nde_kwargs)
+    train_args = {} if train_args is None else dict(train_args)
+
+    # load_nde_lampe returns a list of constructors (callables)
+    nets = load_nde_lampe(
+        model=model,
+        embedding_net=embedding_net,
+        device=device,
+        engine=engine,
+        **nde_kwargs,
+    )
+
+    runner = None
+    # Prefer the universal InferenceRunner interface if it supports lampe.
+    try:
+        from ili.inference import InferenceRunner  # type: ignore
+
+        runner = InferenceRunner.load(
+            backend="lampe",
+            engine=engine,
+            prior=prior,
+            nets=nets,
+            train_args=train_args,
+            out_dir=out_dir,
+            device=device,
+            proposal=proposal,
+            name=name,
+            signatures=signatures,
+        )
+    except Exception:
+        from ili.inference.runner_lampe import LampeRunner  # type: ignore
+
+        runner = LampeRunner(
+            prior=prior,
+            nets=nets,
+            engine=engine,
+            train_args=train_args,
+            out_dir=out_dir,
+            device=device,
+            proposal=proposal,
+            name=name,
+            signatures=signatures,
+        )
+
+    posterior, summaries = runner(loader, seed=seed)
+    return posterior, summaries, runner
+
+
+__all__ = ["train_sbi_posterior", "train_lampe_posterior"]

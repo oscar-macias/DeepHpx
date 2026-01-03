@@ -43,6 +43,36 @@ def __getattr__(name: str) -> Any:
             "build_laplacian_pyramid": build_laplacian_pyramid,
         }[name]
 
+    if name in {
+        "HealpixFileDataset",
+        "SplitSpec",
+        "split_indices",
+        "make_dataloaders_from_files",
+        "make_ili_torch_loader",
+        "make_ili_torch_loader_from_files",
+        "train_lampe_posterior",
+    }:
+        # These require torch (and, for the returned LtU-ILI loader, ili).
+        from .dataset import HealpixFileDataset  # noqa: WPS433
+        from .torch_loader import (  # noqa: WPS433
+            SplitSpec,
+            split_indices,
+            make_dataloaders_from_files,
+            make_ili_torch_loader,
+            make_ili_torch_loader_from_files,
+        )
+        from .train import train_lampe_posterior  # noqa: WPS433
+
+        return {
+            "HealpixFileDataset": HealpixFileDataset,
+            "SplitSpec": SplitSpec,
+            "split_indices": split_indices,
+            "make_dataloaders_from_files": make_dataloaders_from_files,
+            "make_ili_torch_loader": make_ili_torch_loader,
+            "make_ili_torch_loader_from_files": make_ili_torch_loader_from_files,
+            "train_lampe_posterior": train_lampe_posterior,
+        }[name]
+
     raise AttributeError(f"module 'deephpx.ili' has no attribute {name!r}")
 
 
@@ -53,8 +83,16 @@ __all__ = [
     "make_ili_numpy_loader_from_files",
     # training
     "train_sbi_posterior",
+    "train_lampe_posterior",
     # embedding (lazy)
     "HealpixEmbeddingNet",
     "HealpixEmbeddingSpec",
     "build_laplacian_pyramid",
+    # streaming / torch dataloaders (lazy)
+    "HealpixFileDataset",
+    "SplitSpec",
+    "split_indices",
+    "make_dataloaders_from_files",
+    "make_ili_torch_loader",
+    "make_ili_torch_loader_from_files",
 ]

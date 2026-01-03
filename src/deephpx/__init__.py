@@ -16,6 +16,10 @@ Milestone 4:
 Milestone 5:
 - Multi-resolution HEALPix encoder (maps -> fixed-length embeddings)
 
+Milestone 6:
+- Thin LtU-ILI integration helpers (HEALPix maps -> LtU-ILI loaders, plus an
+  embedding_net that works with SBI flows)
+
 The project is intentionally modular:
 - Base installation depends only on NumPy.
 - Extras:
@@ -28,4 +32,4 @@ from __future__ import annotations
 
 __all__ = ["__version__"]
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"

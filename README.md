@@ -1,6 +1,6 @@
-# DeepHpx (Milestone 6)
+# DeepHpx (Milestone 7)
 
-This is the **Milestone 6** cut of the DeepHpx project.
+This is the **Milestone 7** cut of the DeepHpx project.
 
 - **Milestone 1:** HEALPix map ingestion + ordering normalization (RING <-> NEST)
 - **Milestone 2:** PyGSP-free HEALPix graph backend (neighbours -> adjacency -> Laplacian)
@@ -8,6 +8,7 @@ This is the **Milestone 6** cut of the DeepHpx project.
 - **Milestone 4:** HEALPix pooling/unpooling layers (NSIDE/2 <-> pixels/4)
 - **Milestone 5:** Multi-resolution HEALPix encoder (maps -> fixed-length embeddings)
 - **Milestone 6:** LtU-ILI integration (HEALPix maps -> LtU-ILI loaders + SBI flow training helpers)
+- **Milestone 7:** Streaming HEALPix ingestion (PyTorch DataLoader -> LtU-ILI TorchLoader) + lampe training helper
 
 ## Install (editable)
 
@@ -42,7 +43,7 @@ pip install -e '.[dev,healpix,graph,torch]'
 pytest
 ```
 
-## LtU-ILI integration (Milestone 6)
+## LtU-ILI integration (Milestone 6-7)
 
 DeepHpx keeps LtU-ILI as an *optional* dependency.
 
@@ -75,6 +76,13 @@ Milestone 6 adds:
 - **Embedding net:** ``deephpx.ili.HealpixEmbeddingNet`` that internally builds
   the Laplacian pyramid and can be passed into ``ili.utils.load_nde_sbi``
 
+Milestone 7 adds:
+
+- **Streaming dataset:** ``deephpx.ili.HealpixFileDataset`` for on-demand disk reads
+- **TorchLoader wrappers:** ``deephpx.ili.make_ili_torch_loader_from_files(...)``
+  to create LtU-ILI ``TorchLoader`` objects from map files + ``theta.npy``
+- **Lampe training helper:** ``deephpx.ili.train_lampe_posterior(...)``
+
 ## Examples
 
 Build a graph for a given NSIDE and print stats:
@@ -106,5 +114,13 @@ Train an SBI normalizing flow (NPE + MAF) via LtU-ILI on *toy* HEALPix maps:
 
 ```bash
 python examples/05_ili_sbi_train_healpix.py --mode toy --nside 16 --levels 3
+```
+
+Train a flow with *streaming* data loading using LtU-ILI's **lampe** backend:
+
+```bash
+python examples/06_ili_lampe_train_streaming_healpix.py --mode toy --nside 16 --levels 3 \
+  --channels 8,16,32 --embedding-dim 64 --num-samples 512 --batch-size 32 \
+  --out-dir ./_out_streaming
 ```
 
