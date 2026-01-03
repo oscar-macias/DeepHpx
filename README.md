@@ -4,7 +4,7 @@ Heres is a **summary** of the core functionality of this project:
 
 - **1)** HEALPix map ingestion + ordering normalization (RING <-> NEST)
 - **2)** PyGSP-free HEALPix graph backend (neighbours -> adjacency -> Laplacian)
-- **3)** Chebyshev (ChebNet-style) graph convolution in pure PyTorch
+- **3)** Chebyshev (ChebNet-style) graph convolution in modern PyTorch
 - **4)** HEALPix pooling/unpooling layers (NSIDE/2 <-> pixels/4)
 - **5)** Multi-resolution HEALPix encoder (maps -> fixed-length embeddings)
 - **6)** LtU-ILI integration (HEALPix maps -> LtU-ILI loaders + SBI flow training helpers)
