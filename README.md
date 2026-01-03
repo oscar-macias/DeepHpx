@@ -1,12 +1,13 @@
-# DeepHpx (Milestone 5)
+# DeepHpx (Milestone 6)
 
-This is the **Milestone 5** cut of the DeepHpx project.
+This is the **Milestone 6** cut of the DeepHpx project.
 
 - **Milestone 1:** HEALPix map ingestion + ordering normalization (RING <-> NEST)
 - **Milestone 2:** PyGSP-free HEALPix graph backend (neighbours -> adjacency -> Laplacian)
 - **Milestone 3:** Chebyshev (ChebNet-style) graph convolution in pure PyTorch
 - **Milestone 4:** HEALPix pooling/unpooling layers (NSIDE/2 <-> pixels/4)
 - **Milestone 5:** Multi-resolution HEALPix encoder (maps -> fixed-length embeddings)
+- **Milestone 6:** LtU-ILI integration (HEALPix maps -> LtU-ILI loaders + SBI flow training helpers)
 
 ## Install (editable)
 
@@ -41,7 +42,23 @@ pip install -e '.[dev,healpix,graph,torch]'
 pytest
 ```
 
-## Milestone 5 features
+## LtU-ILI integration (Milestone 6)
+
+DeepHpx keeps LtU-ILI as an *optional* dependency.
+
+Install DeepHpx with LtU-ILI (PyTorch backend) enabled:
+
+```bash
+pip install -e '.[dev,healpix,graph,torch,ili]'
+```
+
+This installs ``ltu-ili[pytorch]`` and enables:
+
+- ``deephpx.ili.HealpixEmbeddingNet`` (ready-to-use ``embedding_net`` for SBI flows)
+- ``deephpx.ili.make_ili_numpy_loader(...)`` and friends
+- ``deephpx.ili.train_sbi_posterior(...)``
+
+## Milestone 6 features
 
 - **Neighbours:** build 8-neighbour connectivity via `healpy.pixelfunc.get_all_neighbours`
 - **Adjacency:** build a SciPy sparse CSR adjacency matrix from neighbour lists
@@ -50,6 +67,13 @@ pytest
 - **ChebConv:** Chebyshev graph convolution (`deephpx.nn.ChebConv` / `deephpx.nn.SphericalChebConv`)
 - **Pooling:** HEALPix AvgPool/MaxPool (+ corresponding unpool layers) for hierarchical downsampling
 - **Encoder:** `deephpx.nn.HealpixEncoder` that stacks ChebConv + pooling and returns an embedding vector
+
+Milestone 6 adds:
+
+- **LtU-ILI integration:** ``deephpx.ili`` helpers for wrapping HEALPix maps
+  into LtU-ILI loaders (``ili.dataloaders.NumpyLoader``)
+- **Embedding net:** ``deephpx.ili.HealpixEmbeddingNet`` that internally builds
+  the Laplacian pyramid and can be passed into ``ili.utils.load_nde_sbi``
 
 ## Examples
 
@@ -76,5 +100,11 @@ Smoke test the multi-resolution encoder:
 
 ```bash
 python examples/04_encoder_forward.py --nside 16 --levels 3 --channels 8,16,32 --embedding-dim 64
+```
+
+Train an SBI normalizing flow (NPE + MAF) via LtU-ILI on *toy* HEALPix maps:
+
+```bash
+python examples/05_ili_sbi_train_healpix.py --mode toy --nside 16 --levels 3
 ```
 
